@@ -15,8 +15,7 @@
           size="25px"
           :class="[
             {
-              'text-accent': $route.name === index,
-              'translate-y-3': $route.name !== index,
+              'text-accent ': $route.name === index,
             },
           ]"
           :key="index"
@@ -24,11 +23,14 @@
         >
         </Icon>
         <span
-          class="text-xs transition-all"
+          class="text-[0.2rem] transition-all"
           :class="[
-            { 'text-accent scale-100': $route.name === index },
             {
-              'scale-0': $route.name !== index,
+              'text-accent scale-[200%] opacity-100 translate-y-1':
+                $route.name === index,
+            },
+            {
+              'scale-0 opacity-0': $route.name !== index,
             },
           ]"
           >&#9679;</span
