@@ -26,7 +26,7 @@
           class="text-[0.2rem] transition-all"
           :class="[
             {
-              'text-accent scale-[200%] opacity-100 translate-y-1':
+              'text-accent scale-[400%] opacity-100 translate-y-1':
                 $route.name === index,
             },
             {
