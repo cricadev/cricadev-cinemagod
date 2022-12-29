@@ -7,7 +7,6 @@
         :to="index"
         v-for="(index, icon) of icons"
         class="flex flex-col items-center"
-        @click="active"
       >
         <Icon
           :name="icon"
