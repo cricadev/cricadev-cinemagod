@@ -43,12 +43,12 @@ const getNameTag = (lang) => {
 };
 </script>
 <template>
-  <div class="">
+  <div class="self-center">
     <!-- Check All -->
     <span class="hidden">{{ languages }} {{ addedLAngs }}</span>
     <!-- Checkboxes list -->
     <ul
-      class="w-full overflow-x-auto overflow-y-hidden flex items-center h-full gap-2"
+      class="w-full overflow-x-auto overflow-y-hidden flex items-center h-fit gap-2 rounded-lg justify-self-center"
     >
       <li v-for="lang in langsdata.slice(0, 5)">
         <label
