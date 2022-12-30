@@ -298,30 +298,98 @@
         </div>-->
       </div>
     </div>
-
-    <p
-      class="absolute font-light leading-normal tracking-wide text-sm_m top-8 left-24"
-    >
-      🤞 Hey,
-      <br />
-      <span class="font-medium">Louis!</span>
-    </p>
-    <div
-      class="relative flex items-center justify-center px-8 py-4 mx-8 rounded-lg shadow-xl mt-28 progress-banner bg-secondary text-end"
-    >
-      <div class="container">
-        <div class="circular-progress">
-          <span class="progress-value">0%</span>
-        </div>
-      </div>
-
-      <p class="text-[0.75rem]">
-        🎉 <strong class="font-medium">50% off</strong> on your first combo
+    <div class="intro-text">
+      <p
+        class="absolute font-light leading-normal tracking-wide text-sm_m top-8 left-24"
+      >
+        🤞 Hey,
+        <br />
+        <span class="font-medium">Louis!</span>
       </p>
+    </div>
+    <div class="progress-user">
+      <div
+        class="relative flex items-center justify-center px-8 py-4 mx-8 rounded-lg shadow-xl mt-28 progress-banner bg-secondary text-end"
+      >
+        <div class="container">
+          <div class="circular-progress">
+            <span class="progress-value">0%</span>
+          </div>
+        </div>
+
+        <p class="text-[0.75rem]">
+          🎉 <strong class="font-medium">50% off</strong> on your first combo
+        </p>
+      </div>
+    </div>
+    <div class="mt-12 carousel">
+      <carousel
+        :items-to-show="1.5"
+        autoplay="2000"
+        wrapAround="true"
+        pauseAutoplayOnHover="true"
+      >
+        <slide v-for="slide in promoSlides" :key="slide">
+          <div
+            class="grid items-center justify-center w-full h-48 grid-cols-2 grid-rows-4 rounded-lg shadow-2xl place-items-center bg-secondary"
+          >
+            <img
+              :src="slide.img"
+              alt=""
+              class="object-contain w-full h-full col-span-1 row-span-4"
+            />
+            <p
+              class="col-start-2 col-end-3 row-start-1 row-end-2 font-bold text-base_t"
+            >
+              {{ slide.title }}
+            </p>
+            <p class="text-[0.75rem] row-start-2 row-end-4 col-start-2">
+              {{ slide.description }}
+            </p>
+            <a
+              v-if="slide.callToAction"
+              class="p-2 px-4 bg-accent rounded-lg text-[0.563rem] font-bold flex items-center w-fit"
+              >Learn more
+              <Icon name="material-symbols:arrow-forward-ios" size=""></Icon>
+            </a>
+          </div>
+        </slide>
+
+        <template #addons>
+          <pagination />
+        </template>
+      </carousel>
     </div>
   </div>
 </template>
 <script setup>
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+
+const promoSlides = [
+  {
+    title: "New Releases",
+    description:
+      "Check out our latest blockbusters now showing on the big screen!",
+    callToAction: true,
+    img: "../image3.png",
+  },
+  {
+    title: "Concessions Specials",
+    description:
+      "Enjoy discounted snacks and drinks during our weekday matinees.",
+    callToAction: true,
+    img: "../image4.png",
+  },
+  {
+    title: "Membership Rewards",
+    description:
+      "Sign up for a membership and earn points towards free tickets and concessions!",
+    callToAction: true,
+    img: "../image12.png",
+  },
+];
+
 onBeforeMount(async () => {
   const { data: movies } = await useLazyFetch(
     "https://api.themoviedb.org/3/movie/popular?api_key=1a2b3c4d5e6f7g8h9i0j&language=en-US&page=1"
@@ -433,5 +501,49 @@ $text: #eee;
   font-size: 30px;
   font-weight: 300;
   color: #fff;
+}
+.carousel__pagination {
+  padding: 4px;
+}
+.carousel__pagination-button {
+  background-color: $tertiary;
+  border-radius: 50%;
+  transform: scaleY(1.4) scaleX(0.8);
+
+  margin: 2px;
+  margin-top: 16px;
+  &:hover {
+    background-color: $accent;
+    transition: 0.2s all ease-in;
+  }
+}
+.carousel__pagination-button:hover::after {
+  background-color: $accent;
+  transition: 0.2s all ease-in;
+}
+.carousel__pagination-button::after {
+  background-color: $tertiary;
+  border-radius: 50%;
+  &:hover {
+    background-color: $accent;
+    transition: 0.2s all ease-in;
+  }
+}
+.carousel__pagination-button--active {
+  background-color: $accent;
+  transform: scaleY(2.2) scaleX(1.2);
+
+  border-radius: 50%;
+}
+.carousel__pagination-button--active::after {
+  background-color: $accent;
+  border-radius: 50%;
+}
+.carousel__slide {
+}
+.carousel__slide--prev,
+.carousel__slide--next {
+  transform: scale(0.8);
+  transition: 0.2s all ease-in-out;
 }
 </style>
