@@ -1,3 +1,5 @@
 <template>
-  <div>social</div>
+  <div>
+    <Tags></Tags>
+  </div>
 </template>

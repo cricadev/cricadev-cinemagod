@@ -22,7 +22,7 @@
           <div class="relative left-2 user-card top-8">
             <div class="flex items-center justify-center gap-2">
               <div class="avatar">
-                <img src="../public/avatar.png" alt="" class="h-full w-9" />
+                <img src="../avatar.png" alt="" class="h-full w-9" />
               </div>
               <div class="user-info">
                 <p
@@ -137,7 +137,7 @@
           <div class="relative left-2 user-card top-8">
             <div class="flex items-center justify-center gap-2">
               <div class="avatar">
-                <img src="../public/avatar.png" alt="" class="h-full w-9" />
+                <img src="../avatar.png" alt="" class="h-full w-9" />
               </div>
               <div class="user-info">
                 <p
@@ -325,9 +325,9 @@
     <div class="mt-4 carousel">
       <carousel
         :items-to-show="1.5"
-        autoplay="5000"
-        wrapAround="true"
-        pauseAutoplayOnHover="true"
+        :autoplay="5000"
+        :wrapAround="true"
+        :pauseAutoplayOnHover="true"
       >
         <slide v-for="slide in promoSlides" :key="slide">
           <div
@@ -366,7 +366,7 @@
       ></div>
     </div>
     <div
-      class="search-and-tag-system grid grid-cols-[25%_65%] grid-rows-1 h-16 ml-0 mt-8"
+      class="search-and-tag-system grid grid-cols-[25%_65%] grid-rows-1 h-16 ml-4 mt-8"
     >
       <div class="search-container w-full h-full place-self-center">
         <form action="/search" method="get" class="w-full">
@@ -377,34 +377,13 @@
             name="q"
             placeholder="Search"
           />
-          <label class="button searchbutton" for="searchleft"
+          <label class="button searchbutton rounded-lg" for="searchleft"
             ><span class="mglass">&#9906;</span></label
           >
         </form>
       </div>
-      <div class="tag-system col-start-2 col-end-3">
-        <div class="flex h-full overflow-x-auto overflow-y-hidden">
-          <!-- render a checkbox for each tag -->
-          <label v-for="(tag, index) of tags" :key="tag" class="m-2 relative">
-            <input type="checkbox" class="w-full absolute top-0 left-0" />
-            <button
-              class="bg-secondary p-2 shadow-xl rounded-lg flex gap-2 items-center"
-              @click="addTag(tag.name)"
-            >
-              <span> {{ tag.emoji }}</span>
-              {{ tag.name }}
-            </button>
-          </label>
-        </div>
-        <div class="flex flex-wrap">
-          <!-- render a movie component for each movie in the filtered list -->
-          <movie-component
-            v-for="movie in filteredMovies"
-            :key="movie.id"
-            :movie="movie"
-          />
-        </div>
-      </div>
+
+      <Tags></Tags>
     </div>
   </div>
 </template>
@@ -546,7 +525,7 @@ const removeTag = (id) => {
 };
 //parse fetched data to object
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 $background: #151517;
 $secondary: #1e1e1e;
 $accent: #0059e0;
@@ -662,13 +641,9 @@ $text: #eee;
 }
 
 .button {
-  display: inline-block;
-  margin: 4px 2px;
   background-color: $accent;
-  border-radius: 50%;
+
   font-size: 14px;
-  padding-left: 32px;
-  padding-right: 32px;
   height: 50px;
   line-height: 50px;
   text-align: center;

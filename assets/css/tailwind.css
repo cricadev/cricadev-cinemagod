@@ -8,3 +8,8 @@ html {
 body {
   @apply font-inter;
 }
+@layer components {
+  .button-tags {
+    @apply py-2 transition-all rounded-lg text-[.75rem] pointer-events-auto whitespace-nowrap  flex items-center  relative  select-none border-none shadow-2xl px-8;
+  }
+}
