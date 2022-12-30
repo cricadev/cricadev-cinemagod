@@ -322,16 +322,16 @@
         </p>
       </div>
     </div>
-    <div class="mt-12 carousel">
+    <div class="mt-4 carousel">
       <carousel
         :items-to-show="1.5"
-        autoplay="2000"
+        autoplay="5000"
         wrapAround="true"
         pauseAutoplayOnHover="true"
       >
         <slide v-for="slide in promoSlides" :key="slide">
           <div
-            class="grid items-center justify-center w-full h-48 grid-cols-2 grid-rows-4 rounded-lg shadow-2xl place-items-center bg-secondary"
+            class="grid items-center justify-center w-full grid-cols-2 grid-rows-4 rounded-xl shadow-2xl place-items-center bg-secondary"
           >
             <img
               :src="slide.img"
@@ -339,16 +339,18 @@
               class="object-contain w-full h-full col-span-1 row-span-4"
             />
             <p
-              class="col-start-2 col-end-3 row-start-1 row-end-2 font-bold text-base_t"
+              class="col-start-2 col-end-3 row-start-1 row-end-3 font-bold text-base_t leading-tight -translate-y-1"
             >
               {{ slide.title }}
             </p>
-            <p class="text-[0.75rem] row-start-2 row-end-4 col-start-2">
+            <p
+              class="text-[0.75rem] row-start-1 row-end-3 col-start-2 text-[#e6ebf8] font-medium leading-tight translate-y-6"
+            >
               {{ slide.description }}
             </p>
             <a
               v-if="slide.callToAction"
-              class="p-2 px-4 bg-accent rounded-lg text-[0.563rem] font-bold flex items-center w-fit"
+              class="p-2 px-4 bg-accent rounded-lg text-[0.563rem] font-bold flex items-center w-fit row-start-3 row-end-5 col-start-2 col-end-3 mt-2"
               >Learn more
               <Icon name="material-symbols:arrow-forward-ios" size=""></Icon>
             </a>
@@ -359,6 +361,50 @@
           <pagination />
         </template>
       </carousel>
+      <div
+        class="flex items-center justify-center w-[80%] left-[10%] absolute h-px my-4 bg-text"
+      ></div>
+    </div>
+    <div
+      class="search-and-tag-system grid grid-cols-[25%_65%] grid-rows-1 h-16 ml-0 mt-8"
+    >
+      <div class="search-container w-full h-full place-self-center">
+        <form action="/search" method="get" class="w-full">
+          <input
+            class="search"
+            id="searchleft"
+            type="search"
+            name="q"
+            placeholder="Search"
+          />
+          <label class="button searchbutton" for="searchleft"
+            ><span class="mglass">&#9906;</span></label
+          >
+        </form>
+      </div>
+      <div class="tag-system col-start-2 col-end-3">
+        <div class="flex h-full overflow-x-auto overflow-y-hidden">
+          <!-- render a checkbox for each tag -->
+          <label v-for="(tag, index) of tags" :key="tag" class="m-2 relative">
+            <input type="checkbox" class="w-full absolute top-0 left-0" />
+            <button
+              class="bg-secondary p-2 shadow-xl rounded-lg flex gap-2 items-center"
+              @click="addTag(tag.name)"
+            >
+              <span> {{ tag.emoji }}</span>
+              {{ tag.name }}
+            </button>
+          </label>
+        </div>
+        <div class="flex flex-wrap">
+          <!-- render a movie component for each movie in the filtered list -->
+          <movie-component
+            v-for="movie in filteredMovies"
+            :key="movie.id"
+            :movie="movie"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -368,23 +414,20 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
 const promoSlides = [
   {
-    title: "New Releases",
-    description:
-      "Check out our latest blockbusters now showing on the big screen!",
+    title: "30% off",
+    description: "Each monday",
     callToAction: true,
     img: "../image3.png",
   },
   {
-    title: "Concessions Specials",
-    description:
-      "Enjoy discounted snacks and drinks during our weekday matinees.",
+    title: "Free Soda",
+    description: "For your first purchase",
     callToAction: true,
     img: "../image4.png",
   },
   {
-    title: "Membership Rewards",
-    description:
-      "Sign up for a membership and earn points towards free tickets and concessions!",
+    title: "10% off",
+    description: "For your first purchase",
     callToAction: true,
     img: "../image12.png",
   },
@@ -430,6 +473,77 @@ const { data: movies } = await useLazyFetch(
   "https://api.themoviedb.org/3/movie/now_playing?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&page=1"
 );
 
+const searchQuery = ref("");
+const searchResults = ref([]);
+const search = async () => {
+  const { data: results } = await useLazyFetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&query=${searchQuery.value}&page=1&include_adult=false`
+  );
+  searchResults.value = results.results;
+};
+
+const tags = [
+  {
+    emoji: "🏝️",
+    name: "adventure",
+  },
+
+  {
+    emoji: "🎭",
+    name: "comedy",
+  },
+  {
+    emoji: "👻",
+    name: "horror",
+  },
+  {
+    emoji: "🎬",
+    name: "action",
+  },
+  {
+    emoji: "🔫",
+    name: "crime",
+  },
+  {
+    emoji: "👩‍🎤",
+    name: "music",
+  },
+  {
+    emoji: "👨‍🎨",
+    name: "animation",
+  },
+  {
+    emoji: "👩‍🔬",
+    name: "science fiction",
+  },
+  {
+    emoji: "🎬",
+    name: "drama",
+  },
+  {
+    emoji: "👨‍🏫",
+    name: "romance",
+  },
+  {
+    emoji: "👩‍🏫",
+    name: "thriller",
+  },
+  {
+    emoji: "👩‍🔬",
+    name: "family",
+  },
+  {
+    emoji: "👩‍🔬",
+    name: "fantasy",
+  },
+];
+const selectedTags = ref([]);
+const addTag = (id) => {
+  selectedTags.value.push(id);
+};
+const removeTag = (id) => {
+  selectedTags.value = selectedTags.value.filter((tag) => tag !== id);
+};
 //parse fetched data to object
 </script>
 <style lang="scss">
@@ -508,10 +622,8 @@ $text: #eee;
 .carousel__pagination-button {
   background-color: $tertiary;
   border-radius: 50%;
-  transform: scaleY(1.4) scaleX(0.8);
+  transform: scaleY(1.2) scaleX(0.6);
 
-  margin: 2px;
-  margin-top: 16px;
   &:hover {
     background-color: $accent;
     transition: 0.2s all ease-in;
@@ -531,7 +643,7 @@ $text: #eee;
 }
 .carousel__pagination-button--active {
   background-color: $accent;
-  transform: scaleY(2.2) scaleX(1.2);
+  transform: scaleY(1.4) scaleX(0.8);
 
   border-radius: 50%;
 }
@@ -540,10 +652,120 @@ $text: #eee;
   border-radius: 50%;
 }
 .carousel__slide {
-}
-.carousel__slide--prev,
-.carousel__slide--next {
   transform: scale(0.8);
   transition: 0.2s all ease-in-out;
+}
+
+.carousel__track .carousel__slide--active {
+  transform: scale(1);
+  transition: 0.5s all ease-in-out;
+}
+
+.button {
+  display: inline-block;
+  margin: 4px 2px;
+  background-color: $accent;
+  border-radius: 50%;
+  font-size: 14px;
+  padding-left: 32px;
+  padding-right: 32px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: 0.2s all ease-in-out;
+}
+
+.button:hover {
+  transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  background-color: white;
+  color: $accent;
+  outline-width: 5px;
+  outline-color: $accent;
+}
+
+.search-container {
+  position: relative;
+  display: inline-block;
+  margin: 4px 2px;
+  height: 50px;
+  width: 50px;
+  vertical-align: bottom;
+}
+
+.mglass {
+  display: inline-block;
+  pointer-events: none;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+}
+
+.searchbutton {
+  position: absolute;
+  font-size: 22px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.search:focus + .searchbutton {
+  transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  background-color: white;
+  color: $accent;
+  border-radius: 50% 0% 0% 50%;
+}
+
+.search {
+  color: $accent;
+
+  position: absolute;
+  left: 49px; /* Button width-1px (Not 50px/100% because that will sometimes show a 1px line between the search box and button) */
+  background-color: white;
+  outline: none;
+  border: none;
+  padding: 0;
+  width: 0;
+  height: 100%;
+  z-index: 10;
+  border-radius: 0% 40px 40px 0%;
+
+  transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+}
+.search::placeholder {
+  color: $accent;
+}
+
+.search:focus {
+  /* Bar width+1px */
+  width: 75vw;
+  margin-right: 8px;
+  border: 4px $accent;
+}
+
+.expandright {
+  left: auto;
+  right: 49px; /* Button width-1px */
+}
+
+.expandright:focus {
+  padding: 0 0 0 16px;
 }
 </style>
