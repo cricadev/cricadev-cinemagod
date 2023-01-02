@@ -22,7 +22,7 @@
           <div class="relative left-2 user-card top-8">
             <div class="flex items-center justify-center gap-2">
               <div class="avatar">
-                <img src="../avatar.png" alt="" class="h-full w-9" />
+                <img src="../public/avatar.png" alt="" class="h-full w-9" />
               </div>
               <div class="user-info">
                 <p
@@ -137,7 +137,7 @@
           <div class="relative left-2 user-card top-8">
             <div class="flex items-center justify-center gap-2">
               <div class="avatar">
-                <img src="../avatar.png" alt="" class="h-full w-9" />
+                <img src="../public/avatar.png" alt="" class="h-full w-9" />
               </div>
               <div class="user-info">
                 <p
