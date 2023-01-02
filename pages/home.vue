@@ -1,20 +1,20 @@
 <template>
-  <div class="">
+  <div class="pb-144">
     <div class="menu-nav">
       <div class="burger-menu">
-        <div class="fixed px-4 py-3 rounded-xl left-8 top-8 bg-secondary">
+        <div class="fixed z-10 px-4 py-3 rounded-xl left-8 top-8 bg-secondary">
           <Icon name="mdi:menu" @click="openNav"></Icon>
         </div>
       </div>
       <nav class="nav">
         <div
-          class="fixed top-0 left-0 w-full h-full nav bg-[#000] opacity-50 z-10 menu"
+          class="fixed top-0 left-0 w-full h-full nav bg-[#000] opacity-50 menu z-20"
           v-if="toggleNav"
           @click="openNav"
         ></div>
         <div
           v-if="toggleNav"
-          class="nav bg-background w-[70%] h-full z-20 fixed top-0 left-0 menu"
+          class="nav bg-background w-[70%] h-full z-40 fixed top-0 left-0 menu"
         >
           <div class="fixed z-20 p-3 rounded-xl left-4 top-8 bg-secondary">
             <Icon name="mdi:close" @click="openNav" size="20px"></Icon>
@@ -123,7 +123,7 @@
       </nav>
       <nav class="nav">
         <div
-          class="fixed top-0 left-0 w-full h-full nav bg-[#000] opacity-50 z-10 antimenu"
+          class="fixed top-0 left-0 w-full h-full nav bg-[#000] opacity-50 z-20 antimenu"
           v-if="!toggleNav"
           @click="openNav"
         ></div>
@@ -240,12 +240,12 @@
 
     <div class="ticket">
       <div
-        class="fixed px-4 py-3 shadow-2xl ticket-btn bg-secondary rounded-xl right-8 top-8"
+        class="fixed z-10 px-4 py-3 shadow-2xl ticket-btn bg-secondary rounded-xl right-8 top-8"
         @click="openModal"
       >
         <Icon name="mdi:ticket-confirmation"></Icon>
       </div>
-      <div class="menu bg-background menu-style" v-if="toggle">
+      <div class="z-50 menu bg-background menu-style" v-if="toggle">
         <div class="navigation-tickets">
           <div class="goback">
             <div class="fixed px-4 py-3 rounded-xl left-8 top-8 bg-secondary">
@@ -517,6 +517,9 @@ $accent: #0059e0;
 $tertiary: #7eb0df;
 $inactive: #afafaf;
 $text: #eee;
+body {
+  overflow-y: auto;
+}
 .bg-gradient {
   background: linear-gradient(
     180deg,
