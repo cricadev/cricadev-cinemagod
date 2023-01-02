@@ -261,15 +261,6 @@
             <span class="font-semibold text-sm_m">Your tickets</span>
           </div>
         </div>
-        <!-- <div class="grid h-full grid-flow-row overflow-auto">
-          <div class="card" v-for="(index, item) of movies.results">
-            <h1>{{ index.original_title }}</h1>
-            <img
-              :src="`https://www.themoviedb.org/t/p/w440_and_h660_face/${index.poster_path}`"
-              alt=""
-            />
-          </div>
-        </div>-->
       </div>
       <div class="antimenu bg-background menu-style" v-if="!toggle">
         <div class="navigation-tickets">
@@ -287,15 +278,6 @@
             <span class="font-semibold text-sm_m">Your tickets</span>
           </div>
         </div>
-        <!--   <div class="grid h-full grid-flow-row overflow-auto">
-          <div class="card" v-for="(index, item) of movies.results">
-            <h1>{{ index.original_title }}</h1>
-            <img
-              :src="`https://www.themoviedb.org/t/p/w440_and_h660_face/${index.poster_path}`"
-              alt=""
-            />
-          </div>
-        </div>-->
       </div>
     </div>
     <div class="intro-text">
@@ -353,7 +335,7 @@
         :wrapAround="true"
         :pauseAutoplayOnHover="true"
       >
-        <slide v-for="(slide, index) of movies.results" :key="slide">
+        <slide v-for="(slide, index) of popular.results" :key="slide">
           <div
             class="grid w-full h-56 grid-cols-5 grid-rows-5 overflow-hidden rounded-xl place-items-center"
           >
@@ -439,7 +421,55 @@
 <script setup>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
+useHead({
+  title: "Home",
+  titleTemplate: (title) => `${title} | CinemaGod`,
 
+  meta: [
+    {
+      property: "og:title",
+      content: "Home | CinemaGod",
+    },
+    {
+      property: "og:type",
+      content: "",
+    },
+    {
+      property: "og:description",
+      content:
+        "Welcome to CinemaGod a movie ticket app where you will find every movie ever.",
+    },
+
+    {
+      property: "og:url",
+      content: `https://cinemagod.cricadev.com/home`,
+    },
+
+    {
+      property: "og:site_name",
+      content: "cinemagod",
+    },
+    {
+      property: "twitter:title",
+      content: "Home | CinemaGod",
+    },
+    {
+      hid: "description",
+      name: "description",
+      content:
+        "Welcome to CinemaGod a movie ticket app where you will find every movie ever.",
+    },
+    {
+      hid: "robots",
+      name: "robots",
+      content: "index, follow",
+    },
+    {
+      rel: "cannonical",
+      href: `https://cinemagod.cricadev.com/home`,
+    },
+  ],
+});
 const toggleLike = ref(false);
 
 const toggleFav = () => {
@@ -476,10 +506,9 @@ onMounted(() => {
   }, speed);
 });
 
-const { data: movies } = await useLazyFetch(
+const { data: popular } = await useLazyFetch(
   "https://api.themoviedb.org/3/movie/popular?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&page=1"
 );
-console.log(movies);
 </script>
 <style lang="scss">
 $background: #151517;
