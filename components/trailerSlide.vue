@@ -8,12 +8,12 @@
     </a>
     <Teleport to="body" v-if="toggleVideo">
       <div
-        class="bg-[#000] h-screen w-screen fixed top-0 left-0 grid place-items-center"
+        class="bg-[#000] h-screen w-screen fixed top-0 left-0 grid place-items-center z-50"
       >
         <Icon
           name="mdi:arrow-left"
           @click="openVideoModal"
-          class="absolute p-3 rounded-lg bg-secondary top-4 left-4"
+          class="absolute z-50 p-3 rounded-lg bg-secondary top-4 left-4"
           size="50px"
         ></Icon>
         <iframe
@@ -24,7 +24,7 @@
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          class="absolute z-10 object-cover"
+          class="absolute z-50 object-cover"
         ></iframe>
       </div>
     </Teleport>
