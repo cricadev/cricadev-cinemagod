@@ -350,18 +350,17 @@
       <h3>Suggest</h3>
       <carousel
         :items-to-show="1"
-        :autoplay="5000"
         :wrapAround="true"
         :pauseAutoplayOnHover="true"
       >
         <slide v-for="(slide, index) of movies.results" :key="slide">
           <div
-            class="grid w-full h-56 grid-cols-3 grid-rows-2 overflow-hidden rounded-xl"
+            class="grid w-full h-56 grid-cols-5 grid-rows-5 overflow-hidden rounded-xl place-items-center"
           >
             <img
               :src="`https://www.themoviedb.org/t/p/w533_and_h300_bestv2/${slide.backdrop_path}`"
               alt=""
-              class="object-cover w-full h-full col-start-1 col-end-4 row-start-1 row-end-3"
+              class="object-cover w-full h-full col-start-1 col-end-7 row-start-1 row-end-7"
             />
 
             <div class="absolute w-4 h-4 like right-4 top-4" @click="toggleFav">
@@ -376,13 +375,59 @@
                 v-else
               ></Icon>
             </div>
-
-            <div class="">
-              <LogoSlide :movie="slide.id"></LogoSlide>
+            <div
+              class="z-20 grid self-center col-start-1 col-end-3 row-start-3 row-end-5"
+            >
+              <LogoSlide :movie="slide.id" class=""></LogoSlide>
             </div>
-            <div class="outer">
+            <div class="z-20 outer">
               <TrailerSlide :movie="slide.id"></TrailerSlide>
             </div>
+            <div
+              class="z-20 flex flex-col col-start-1 col-end-3 row-start-5 row-end-6 ml-4 justify-self-start"
+            >
+              <div class="flex items-center gap-px stars">
+                <Icon
+                  name="material-symbols:star"
+                  class="text-[#FFC700]"
+                  size="15px"
+                >
+                </Icon>
+                <Icon
+                  name="material-symbols:star"
+                  class="text-[#FFC700]"
+                  size="15px"
+                >
+                </Icon>
+                <Icon
+                  name="material-symbols:star"
+                  class="text-[#FFC700]"
+                  size="15px"
+                >
+                </Icon>
+                <Icon
+                  name="material-symbols:star"
+                  class="text-[#FFC700]"
+                  size="15px"
+                >
+                </Icon>
+                <Icon
+                  name="material-symbols:star"
+                  class="text-[#FFC700]"
+                  size="15px"
+                >
+                </Icon>
+                <p class="text-[#FFC700] mx-1">({{ slide.vote_count }})</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <Icon name="bxl:imdb" class="text-[#FFC700]" size="30px">
+                </Icon>
+                <p class="text-[#FFC700]">{{ slide.vote_average }}/10</p>
+              </div>
+            </div>
+            <div
+              class="absolute bottom-0 left-0 w-full bg-gradient h-1/2"
+            ></div>
           </div>
         </slide>
 
@@ -393,13 +438,20 @@
 </template>
 <script setup>
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-const testConsole = (slide) => {
-  console.log(getMovieLogos(slide.id));
-};
+import { Carousel, Slide } from "vue3-carousel";
+
 const toggleLike = ref(false);
+
 const toggleFav = () => {
   toggleLike.value = !toggleLike.value;
+};
+const toggle = ref(false);
+const toggleNav = ref(false);
+const openModal = () => {
+  toggle.value = !toggle.value;
+};
+const openNav = () => {
+  toggleNav.value = !toggleNav.value;
 };
 
 onMounted(() => {
@@ -424,40 +476,10 @@ onMounted(() => {
   }, speed);
 });
 
-const toggle = ref(false);
-const toggleNav = ref(false);
-const openModal = () => {
-  toggle.value = !toggle.value;
-};
-const openNav = () => {
-  toggleNav.value = !toggleNav.value;
-};
 const { data: movies } = await useLazyFetch(
   "https://api.themoviedb.org/3/movie/popular?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&page=1"
 );
-// get logos from original
-
-const target_copy = Object.assign({}, movies.value.results);
-// iterate over target_copy object
-const getId = () => {
-  const arrayID = [];
-  for (const [key, value] of Object.entries(target_copy)) {
-    arrayID.push(value.id);
-  }
-  return arrayID;
-};
-const arrayIds = getId();
-
-const logosArr = ref([]);
-
-const selectedTags = ref([]);
-const addTag = (id) => {
-  selectedTags.value.push(id);
-};
-const removeTag = (id) => {
-  selectedTags.value = selectedTags.value.filter((tag) => tag !== id);
-};
-//parse fetched data to object
+console.log(movies);
 </script>
 <style lang="scss">
 $background: #151517;
@@ -466,6 +488,14 @@ $accent: #0059e0;
 $tertiary: #7eb0df;
 $inactive: #afafaf;
 $text: #eee;
+.bg-gradient {
+  background: linear-gradient(
+    180deg,
+    rgb(30, 30, 30, 1) 0%,
+    rgb(30, 30, 30, 1) 100%
+  );
+  box-shadow: 0px -10px 20px 10px rgba(30, 30, 30, 1);
+}
 .menu-style {
   position: fixed;
   top: 0;

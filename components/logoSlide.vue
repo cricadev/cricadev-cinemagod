@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <img
-      :src="`https://www.themoviedb.org/t/p/original/${logo.file_path}`"
-      alt=""
-      v-for="logo in logosArr"
-    />
-  </div>
+  <img
+    :src="`https://www.themoviedb.org/t/p/original/${logo.file_path}`"
+    alt=""
+    v-for="logo in logosArr"
+    class="object-contain w-full h-full"
+  />
 </template>
 <script setup>
 const props = defineProps({
