@@ -322,53 +322,12 @@
         </p>
       </div>
     </div>
-    <div class="mt-4 carousel">
-      <carousel
-        :items-to-show="1.5"
-        :autoplay="5000"
-        :wrapAround="true"
-        :pauseAutoplayOnHover="true"
-      >
-        <slide v-for="slide in promoSlides" :key="slide">
-          <div
-            class="grid items-center justify-center w-full grid-cols-2 grid-rows-4 rounded-xl shadow-2xl place-items-center bg-secondary"
-          >
-            <img
-              :src="slide.img"
-              alt=""
-              class="object-contain w-full h-full col-span-1 row-span-4"
-            />
-            <p
-              class="col-start-2 col-end-3 row-start-1 row-end-3 font-bold text-base_t leading-tight -translate-y-1"
-            >
-              {{ slide.title }}
-            </p>
-            <p
-              class="text-[0.75rem] row-start-1 row-end-3 col-start-2 text-[#e6ebf8] font-medium leading-tight translate-y-6"
-            >
-              {{ slide.description }}
-            </p>
-            <a
-              v-if="slide.callToAction"
-              class="p-2 px-4 bg-accent rounded-lg text-[0.563rem] font-bold flex items-center w-fit row-start-3 row-end-5 col-start-2 col-end-3 mt-2"
-              >Learn more
-              <Icon name="material-symbols:arrow-forward-ios" size=""></Icon>
-            </a>
-          </div>
-        </slide>
-
-        <template #addons>
-          <pagination />
-        </template>
-      </carousel>
-      <div
-        class="flex items-center justify-center w-[80%] left-[10%] absolute h-px my-4 bg-text"
-      ></div>
-    </div>
+    <CarouselBanner></CarouselBanner>
+    <!--SEARCH AND TAG SYSTEM-->
     <div
       class="search-and-tag-system grid grid-cols-[25%_65%] grid-rows-1 h-16 ml-4 mt-8"
     >
-      <div class="search-container w-full h-full place-self-center">
+      <div class="w-full h-full search-container place-self-center">
         <form action="/search" method="get" class="w-full">
           <input
             class="search"
@@ -376,8 +335,9 @@
             type="search"
             name="q"
             placeholder="Search"
+            @keyup.enter="search"
           />
-          <label class="button searchbutton rounded-lg" for="searchleft"
+          <label class="rounded-lg button searchbutton" for="searchleft"
             ><span class="mglass">&#9906;</span></label
           >
         </form>
@@ -385,39 +345,63 @@
 
       <Tags></Tags>
     </div>
+    <!--SUGGEST movies COMPONENT-->
+    <div class="mx-8 suggest-comp">
+      <h3>Suggest</h3>
+      <carousel
+        :items-to-show="1"
+        :autoplay="5000"
+        :wrapAround="true"
+        :pauseAutoplayOnHover="true"
+      >
+        <slide v-for="(slide, index) of movies.results" :key="slide">
+          <div
+            class="grid w-full h-56 grid-cols-3 grid-rows-2 overflow-hidden rounded-xl"
+          >
+            <img
+              :src="`https://www.themoviedb.org/t/p/w533_and_h300_bestv2/${slide.backdrop_path}`"
+              alt=""
+              class="object-cover w-full h-full col-start-1 col-end-4 row-start-1 row-end-3"
+            />
+
+            <div class="absolute w-4 h-4 like right-4 top-4" @click="toggleFav">
+              <Icon
+                name="mdi:cards-heart-outline"
+                class="absolute top-0 left-0"
+                v-if="!toggleLike"
+              ></Icon
+              ><Icon
+                name="mdi:cards-heart"
+                class="absolute top-0 left-0 transition-all text-accent"
+                v-else
+              ></Icon>
+            </div>
+
+            <div class="">
+              <LogoSlide :movie="slide.id"></LogoSlide>
+            </div>
+            <div class="outer">
+              <TrailerSlide :movie="slide.id"></TrailerSlide>
+            </div>
+          </div>
+        </slide>
+
+        <template #addons> </template>
+      </carousel>
+    </div>
   </div>
 </template>
 <script setup>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+const testConsole = (slide) => {
+  console.log(getMovieLogos(slide.id));
+};
+const toggleLike = ref(false);
+const toggleFav = () => {
+  toggleLike.value = !toggleLike.value;
+};
 
-const promoSlides = [
-  {
-    title: "30% off",
-    description: "Each monday",
-    callToAction: true,
-    img: "../image3.png",
-  },
-  {
-    title: "Free Soda",
-    description: "For your first purchase",
-    callToAction: true,
-    img: "../image4.png",
-  },
-  {
-    title: "10% off",
-    description: "For your first purchase",
-    callToAction: true,
-    img: "../image12.png",
-  },
-];
-
-onBeforeMount(async () => {
-  const { data: movies } = await useLazyFetch(
-    "https://api.themoviedb.org/3/movie/popular?api_key=1a2b3c4d5e6f7g8h9i0j&language=en-US&page=1"
-  );
-  console.log(movies);
-});
 onMounted(() => {
   let circularProgress = document.querySelector(".circular-progress"),
     progressValue = document.querySelector(".progress-value");
@@ -449,73 +433,23 @@ const openNav = () => {
   toggleNav.value = !toggleNav.value;
 };
 const { data: movies } = await useLazyFetch(
-  "https://api.themoviedb.org/3/movie/now_playing?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&page=1"
+  "https://api.themoviedb.org/3/movie/popular?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&page=1"
 );
+// get logos from original
 
-const searchQuery = ref("");
-const searchResults = ref([]);
-const search = async () => {
-  const { data: results } = await useLazyFetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US&query=${searchQuery.value}&page=1&include_adult=false`
-  );
-  searchResults.value = results.results;
+const target_copy = Object.assign({}, movies.value.results);
+// iterate over target_copy object
+const getId = () => {
+  const arrayID = [];
+  for (const [key, value] of Object.entries(target_copy)) {
+    arrayID.push(value.id);
+  }
+  return arrayID;
 };
+const arrayIds = getId();
 
-const tags = [
-  {
-    emoji: "🏝️",
-    name: "adventure",
-  },
+const logosArr = ref([]);
 
-  {
-    emoji: "🎭",
-    name: "comedy",
-  },
-  {
-    emoji: "👻",
-    name: "horror",
-  },
-  {
-    emoji: "🎬",
-    name: "action",
-  },
-  {
-    emoji: "🔫",
-    name: "crime",
-  },
-  {
-    emoji: "👩‍🎤",
-    name: "music",
-  },
-  {
-    emoji: "👨‍🎨",
-    name: "animation",
-  },
-  {
-    emoji: "👩‍🔬",
-    name: "science fiction",
-  },
-  {
-    emoji: "🎬",
-    name: "drama",
-  },
-  {
-    emoji: "👨‍🏫",
-    name: "romance",
-  },
-  {
-    emoji: "👩‍🏫",
-    name: "thriller",
-  },
-  {
-    emoji: "👩‍🔬",
-    name: "family",
-  },
-  {
-    emoji: "👩‍🔬",
-    name: "fantasy",
-  },
-];
 const selectedTags = ref([]);
 const addTag = (id) => {
   selectedTags.value.push(id);
@@ -525,7 +459,7 @@ const removeTag = (id) => {
 };
 //parse fetched data to object
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 $background: #151517;
 $secondary: #1e1e1e;
 $accent: #0059e0;
@@ -595,51 +529,6 @@ $text: #eee;
   font-weight: 300;
   color: #fff;
 }
-.carousel__pagination {
-  padding: 4px;
-}
-.carousel__pagination-button {
-  background-color: $tertiary;
-  border-radius: 50%;
-  transform: scaleY(1.2) scaleX(0.6);
-
-  &:hover {
-    background-color: $accent;
-    transition: 0.2s all ease-in;
-  }
-}
-.carousel__pagination-button:hover::after {
-  background-color: $accent;
-  transition: 0.2s all ease-in;
-}
-.carousel__pagination-button::after {
-  background-color: $tertiary;
-  border-radius: 50%;
-  &:hover {
-    background-color: $accent;
-    transition: 0.2s all ease-in;
-  }
-}
-.carousel__pagination-button--active {
-  background-color: $accent;
-  transform: scaleY(1.4) scaleX(0.8);
-
-  border-radius: 50%;
-}
-.carousel__pagination-button--active::after {
-  background-color: $accent;
-  border-radius: 50%;
-}
-.carousel__slide {
-  transform: scale(0.8);
-  transition: 0.2s all ease-in-out;
-}
-
-.carousel__track .carousel__slide--active {
-  transform: scale(1);
-  transition: 0.5s all ease-in-out;
-}
-
 .button {
   background-color: $accent;
 
@@ -702,7 +591,7 @@ $text: #eee;
   -o-transition-duration: 0.4s;
   background-color: white;
   color: $accent;
-  border-radius: 50% 0% 0% 50%;
+  border-radius: 10px 0% 0% 10px;
 }
 
 .search {
@@ -717,7 +606,7 @@ $text: #eee;
   width: 0;
   height: 100%;
   z-index: 10;
-  border-radius: 0% 40px 40px 0%;
+  border-radius: 0% 10px 10px 0%;
 
   transition-duration: 0.4s;
   -moz-transition-duration: 0.4s;
@@ -730,7 +619,7 @@ $text: #eee;
 
 .search:focus {
   /* Bar width+1px */
-  width: 75vw;
+  width: 68vw;
   margin-right: 8px;
   border: 4px $accent;
 }
@@ -742,5 +631,47 @@ $text: #eee;
 
 .expandright:focus {
   padding: 0 0 0 16px;
+}
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  height: 200px;
+  width: 100%;
+
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+}
+
+/* Style the back side */
+.flip-card-back {
+  transform: rotateY(180deg);
 }
 </style>

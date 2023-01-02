@@ -17,6 +17,7 @@
     "@aacassandra/vue3-progressbar": "^1.0.3",
     "lightvue": "^1.5.1",
     "sass": "^1.57.1",
-    "vue3-carousel": "^0.2.9"
+    "vue3-carousel": "^0.2.9",
+    "waait": "^1.0.5"
   }
 }

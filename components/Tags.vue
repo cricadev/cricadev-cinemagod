@@ -48,14 +48,14 @@ const getNameTag = (lang) => {
     <span class="hidden">{{ languages }} {{ addedLAngs }}</span>
     <!-- Checkboxes list -->
     <ul
-      class="w-full overflow-x-auto overflow-y-hidden flex items-center h-fit gap-2 rounded-lg justify-self-center"
+      class="flex items-center w-full gap-2 overflow-x-auto overflow-y-hidden rounded-lg h-fit justify-self-center"
     >
       <li v-for="lang in langsdata.slice(0, 5)">
         <label
-          class="px-8 py-2 transition-all rounded-lg text-[.75rem] pointer-events-auto whitespace-nowrap button flex items-center relative button-special select-none text-center justify-center border-none shadow-2xl"
+          class="px-8 py-2 transition-all rounded-lg text-[.75rem] pointer-events-auto whitespace-nowrap flex items-center relative button-special select-none text-center justify-center border-none shadow-2xl"
           :class="[
             {
-              'bg-accent text-white': languages.includes(lang),
+              'bg-accent text-text': languages.includes(lang),
               'bg-secondary ': !languages.includes(lang),
             },
           ]"
@@ -65,9 +65,9 @@ const getNameTag = (lang) => {
             class="transition-all"
             :class="[
               {
-                'bg-[green2] text-black dark:text-white translate-x-2':
+                'bg-accent text-text dark:text-white translate-x-2':
                   languages.includes(lang),
-                'translate-x-2 text-green2 dark:text-green':
+                'bg-secondary text-text translate-x-2 ':
                   !languages.includes(lang),
               },
             ]"
