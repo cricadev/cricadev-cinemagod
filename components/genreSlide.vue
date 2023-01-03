@@ -4,6 +4,11 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  showActor: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 const getNameTag = (lang) => {
   if (lang == "Adventure") {
@@ -62,12 +67,30 @@ const getMovieData = async () => {
 };
 
 getMovieData();
+const actorsArr = ref([]);
+const getActorData = async () => {
+  const { data: movies } = await useLazyFetch(
+    `http://api.themoviedb.org/3/movie/${props.movie}/credits?api_key=8a91f9a076d5481969b8175b2414651c`
+  );
+
+  actorsArr.value.push(movies.value.cast[0].name);
+};
+getActorData();
 </script>
 <template>
-  <div v-for="(movie, index) of genresArr" class="">
-    <span class="inline p-1 rounded-lg bg-tertiary text-text text-[.7rem]">
-      {{ getNameTag(movie) }}
-    </span>
+  <div class="flex gap-2 items-center">
+    <div v-for="(movie, index) of genresArr" class="">
+      <span class="inline p-1 rounded-lg bg-tertiary text-text text-[.7rem]">
+        {{ getNameTag(movie) }}
+      </span>
+    </div>
+    <div class="" v-if="props.showActor">
+      <div v-for="(movie, index) of actorsArr" class="">
+        <span class="inline p-2 rounded-lg bg-tertiary text-tex">
+          {{ movie }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss"></style>

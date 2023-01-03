@@ -411,8 +411,7 @@
             <div
               class="z-20 flex self-center col-start-3 col-end-5 row-start-5 row-end-6 gap-2"
             >
-              <GenreSlide :movie="slide.id"></GenreSlide>
-              <ActorSlide :movie="slide.id"></ActorSlide>
+              <GenreSlide :movie="slide.id" :show-actor="true"></GenreSlide>
             </div>
 
             <div
