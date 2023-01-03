@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     viewer: true,
   },
   pwa: {
+    workbox: {
+      enabled: false,
+    },
     manifest: {
       name: "CinemaGod",
       short_name: "CinemaGod",

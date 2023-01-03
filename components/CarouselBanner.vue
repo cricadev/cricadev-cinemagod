@@ -67,7 +67,7 @@ const promoSlides = [
   },
 ];
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 $background: #151517;
 $secondary: #1e1e1e;
 $accent: #0059e0;

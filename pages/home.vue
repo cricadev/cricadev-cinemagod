@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-144">
+  <div class="">
     <div class="menu-nav">
       <div class="burger-menu">
         <div class="fixed z-10 px-4 py-3 rounded-xl left-8 top-8 bg-secondary">
@@ -328,11 +328,12 @@
       <Tags></Tags>
     </div>
     <!--SUGGEST movies COMPONENT-->
-    <div class="mx-8 suggest-comp">
-      <h3>Suggest</h3>
+    <div class="mx-8 my-4 suggest-comp">
+      <h3 class="my-4 font-bold text-base_m text-[#E6EBF8]">Suggest</h3>
       <carousel
         :items-to-show="1"
         :wrapAround="true"
+        :autoplay="5000"
         :pauseAutoplayOnHover="true"
       >
         <slide v-for="(slide, index) of popular.results" :key="slide">
@@ -408,6 +409,13 @@
               </div>
             </div>
             <div
+              class="z-20 flex self-center col-start-3 col-end-5 row-start-5 row-end-6 gap-2"
+            >
+              <GenreSlide :movie="slide.id"></GenreSlide>
+              <ActorSlide :movie="slide.id"></ActorSlide>
+            </div>
+
+            <div
               class="absolute bottom-0 left-0 w-full bg-gradient h-1/2"
             ></div>
           </div>
@@ -416,6 +424,7 @@
         <template #addons> </template>
       </carousel>
     </div>
+    <PremierCarousel></PremierCarousel>
   </div>
 </template>
 <script setup>
