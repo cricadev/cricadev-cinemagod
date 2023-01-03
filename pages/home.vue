@@ -424,7 +424,13 @@
         <template #addons> </template>
       </carousel>
     </div>
-    <PremierCarousel></PremierCarousel>
+
+    <!-- PREMIER COMP-->
+    <PremierCarousel title="Premiere" movie="now_playing"></PremierCarousel>
+    <PremierCarousel
+      title="People's Favorite"
+      movie="top_rated"
+    ></PremierCarousel>
   </div>
 </template>
 <script setup>

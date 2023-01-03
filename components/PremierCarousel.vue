@@ -1,33 +1,14 @@
-<script setup>
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide } from "vue3-carousel";
-const { data: premier } = await useLazyFetch(
-  "https://api.themoviedb.org/3/movie/now_playing?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US"
-);
-const toggleLike = ref(false);
-
-const toggleFav = () => {
-  toggleLike.value = !toggleLike.value;
-};
-const toggle = ref(false);
-const toggleNav = ref(false);
-const openModal = () => {
-  toggle.value = !toggle.value;
-};
-const openNav = () => {
-  toggleNav.value = !toggleNav.value;
-};
-</script>
 <template>
   <!-- PREMIER MOVIES COMPONENT -->
   <div class="mx-8 premier-comp pb-144">
-    <h3 class="my-4 font-bold text-base_t text-[#E6EBF8]">Premiere</h3>
+    <h3 class="my-4 font-bold text-base_t text-[#E6EBF8]">{{ props.title }}</h3>
+
     <carousel
       :items-to-show="2.5"
       :wrapAround="true"
       :pauseAutoplayOnHover="true"
     >
-      <slide v-for="(slide, index) of premier.results" :key="slide">
+      <slide v-for="(slide, index) of moviesArr[0]" :key="slide">
         <div
           class="grid w-full h-56 grid-cols-2 grid-rows-6 overflow-hidden rounded-xl place-items-center"
         >
@@ -37,7 +18,7 @@ const openNav = () => {
             class="object-cover w-full h-full col-start-1 col-end-3 row-start-1 row-end-6"
           />
 
-          <div class="absolute w-4 h-4 like right-4 top-4" @click="toggleFav">
+          <div class="absolute w-4 h-4 like right-4 top-4">
             <Icon
               name="mdi:cards-heart-outline"
               class="absolute top-0 left-0"
@@ -86,6 +67,38 @@ const openNav = () => {
     </carousel>
   </div>
 </template>
+<script setup>
+import { onBeforeMount } from "vue";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide } from "vue3-carousel";
+
+const props = defineProps({
+  movie: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+});
+const toggleLike = ref(false);
+
+const toggleFav = () => {
+  toggleLike.value = !toggleLike.value;
+};
+
+const moviesArr = ref([]);
+const getMovieData = async () => {
+  const { data: movies } = await useLazyFetch(
+    `http://api.themoviedb.org/3/movie/${props.movie}?api_key=8a91f9a076d5481969b8175b2414651c`
+  );
+  moviesArr.value.push(movies.value.results);
+};
+onBeforeMount(() => {
+  getMovieData();
+});
+</script>
 <style lang="scss" scoped>
 .carousel__slide {
   transform: scale(1);
