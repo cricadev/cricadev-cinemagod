@@ -43,15 +43,14 @@ const openVideoModal = () => {
 };
 const videosArr = ref([]);
 const getVideos = async () => {
-  const { data: videos } = await useLazyFetch(
-    `https://api.themoviedb.org/3/movie/${props.movie}/videos?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US`
+  const { data: videos } = await useFetch(
+    () =>
+      `https://api.themoviedb.org/3/movie/${props.movie}/videos?api_key=8a91f9a076d5481969b8175b2414651c&language=en-US`
   );
   // get key from the videos
   videosArr.value.push(videos.value.results[0].key);
 };
 
-onBeforeMount(() => {
-  getVideos();
-});
+getVideos();
 </script>
 <style lang="scss"></style>

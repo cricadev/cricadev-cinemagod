@@ -61,9 +61,7 @@ const getMovieData = async () => {
   });
 };
 
-onBeforeMount(() => {
-  getMovieData();
-});
+getMovieData();
 </script>
 <template>
   <div v-for="(movie, index) of genresArr" class="">

@@ -1,6 +1,6 @@
 <template>
   <!-- PREMIER MOVIES COMPONENT -->
-  <div class="mx-8 premier-comp pb-144">
+  <div class="mx-8 my-4 premier-comp">
     <h3 class="my-4 font-bold text-base_t text-[#E6EBF8]">{{ props.title }}</h3>
 
     <carousel
@@ -68,7 +68,6 @@
   </div>
 </template>
 <script setup>
-import { onBeforeMount } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
 
@@ -95,9 +94,7 @@ const getMovieData = async () => {
   );
   moviesArr.value.push(movies.value.results);
 };
-onBeforeMount(() => {
-  getMovieData();
-});
+getMovieData();
 </script>
 <style lang="scss" scoped>
 .carousel__slide {

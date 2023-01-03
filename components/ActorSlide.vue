@@ -13,9 +13,7 @@ const getMovieData = async () => {
 
   moviesArr.value.push(movies.value.cast[0].name);
 };
-onBeforeMount(() => {
-  getMovieData();
-});
+getMovieData();
 </script>
 <template>
   <div v-for="(movie, index) of moviesArr" class="">

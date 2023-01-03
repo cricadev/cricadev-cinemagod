@@ -2,7 +2,7 @@
   <img
     :src="`https://www.themoviedb.org/t/p/original/${logo.file_path}`"
     alt=""
-    v-for="logo in logosArr"
+    v-for="logo in moviesArr"
     class="object-contain w-full h-full"
   />
 </template>
@@ -12,15 +12,16 @@ const props = defineProps({
     type: Number,
   },
 });
-const logosArr = ref([]);
-const getLogos = async () => {
+
+const moviesArr = ref([]);
+const getMovieData = async () => {
   const { data: logos } = await useLazyFetch(
     `https://api.themoviedb.org/3/movie/${props.movie}/images?api_key=8a91f9a076d5481969b8175b2414651c`
   );
-  logosArr.value.push(logos.value.logos[0]);
+  moviesArr.value.push(logos.value.logos[0]);
 };
 onBeforeMount(() => {
-  getLogos();
+  getMovieData();
 });
 </script>
 <style lang="scss"></style>
