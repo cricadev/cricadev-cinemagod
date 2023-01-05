@@ -6,7 +6,7 @@ const props = defineProps({
   },
   showActor: {
     type: Boolean,
-    required: true,
+    required: false,
     default: false,
   },
 });
@@ -78,7 +78,7 @@ const getActorData = async () => {
 getActorData();
 </script>
 <template>
-  <div class="flex gap-2 items-center">
+  <div class="flex items-center gap-2">
     <div v-for="(movie, index) of genresArr" class="">
       <span class="inline p-1 rounded-lg bg-tertiary text-text text-[.7rem]">
         {{ getNameTag(movie) }}

@@ -336,7 +336,7 @@
         :autoplay="5000"
         :pauseAutoplayOnHover="true"
       >
-        <slide v-for="(slide, index) of popular.results" :key="slide">
+        <slide v-for="(slide, index) of popular.results" :key="slide.id">
           <div
             class="grid w-full h-56 grid-cols-5 grid-rows-5 overflow-hidden rounded-xl place-items-center"
           >
@@ -430,6 +430,7 @@
       title="People's Favorite"
       movie="top_rated"
     ></PremierCarousel>
+    <CreditsComp></CreditsComp>
   </div>
 </template>
 <script setup>
